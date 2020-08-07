@@ -1,14 +1,13 @@
 # home-lab-setup
 This small project is to deploy Jenkins via helm chart on k8s on Raspberry Pi 4 8G
 
-On a raspnerry pi 2 1G ram  
-two networks:  
-wifi 192.168.25.0/24
-ethernet 10.0.0.0/24
+On a raspnerry pi 2 1G ram - two networks:  
+wifi 192.168.25.0/24 - > gateway for the ethernet network and allow K8s cluster reach internet.   
+ethernet 10.0.0.0/24 - > K8s network where Jenkins is running  
 
-configure dns for the k8s mostly for network 10.0.0.0/24
-sudo apt-get install bind9 bind9utils dnsutils
-vim /etc/bind/named.conf.local
+configure dns for the k8s mostly for network 10.0.0.0/24  
+sudo apt-get install bind9 bind9utils dnsutils  
+vim /etc/bind/named.conf.local  
 
 ```
 zone "home.lan" IN {
@@ -36,7 +35,7 @@ vim  /etc/bind/db.rev.0.0.10.in-addr.arpa
 3         IN PTR k8-pi-node1.home.lan.
 ```
 
-since I have two dns (pi-hole and this for K8s, i'm using listen { 10.0.0.1}, but it can be any
+since I have two dns (pi-hole and this for K8s, i'm using listen { 10.0.0.1}, but it can be any  
 vim /etc/bind/named.conf.options 
 ```
         listen-on { any; };
@@ -46,12 +45,15 @@ vim /etc/bind/named.conf.options
 ```
 service bind9 restart
 
-I used this to setup this DNS: 
+I used this to setup this DNS:   
 https://www.ionos.com/digitalguide/server/configuration/how-to-make-your-raspberry-pi-into-a-dns-server/
 
 
-configuer it as a router
+configuere it as a router
+```
 echo 1 > /proc/sys/net/ipv4/ip_forward
+```
+
 add this rule to /etc/iptables/rules.v4
 ```
 iptables -A POSTROUTING -o wlan0 -j MASQUERADE
