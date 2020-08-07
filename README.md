@@ -62,9 +62,9 @@ ip route add 10.0.0.0/24 via 192.168.25.254
 ```
 make it permanent
 ```
-[harguer@Hyrule-HP-Spectre-x360-Convertible-13-ae0xx ~]$ grep 10.0.0 /etc/sysconfig/network-scripts/route-FreshTomato50
+$ grep 10.0.0 /etc/sysconfig/network-scripts/route-FreshTomato50
 10.0.0.0/24 via 192.168.25.254
-[harguer@Hyrule-HP-Spectre-x360-Convertible-13-ae0xx ~]$ 
+$ 
 ```
 
 now you can connect to ssh to any node on network 10.0.0./24
@@ -81,13 +81,16 @@ interface eth0
 ```
 start/restart the service
 sudo systemctl start dhcpcd.service
+```
 or
+```
 sudo systemctl restart dhcpcd.service
 sudo systemctl is-enabled dhcpcd.service
 sudo systemctl enabled dhcpcd.service
 ```
 
 Install Docker to have local registry:
+
 ```
 sudo apt-get update;sudo apt-get install docker
 sudo curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
@@ -112,7 +115,9 @@ dn: ou=users,ou=People,dc=home,dc=lan
 objectClass: organizationalUnit
 ou: users
 ```
+
 run:
+
 ```
 sudo ldapadd -D "cn=admin,dc=home,dc=lan" -W -H ldapi:/// -f user.ldif
 ```
@@ -157,5 +162,4 @@ run:
 ```
 sudo ldapadd -D "cn=admin,dc=home,dc=lan" -W -H ldapi:/// -f devops.ldif 
 ```
-
 
