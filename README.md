@@ -1,8 +1,8 @@
 # home-lab-setup
 This small project is to deploy Jenkins via helm chart on k8s on Raspberry Pi 4 8G
 
-On a raspnerry pi 2 1G ram
-two networks:
+On a raspnerry pi 2 1G ram  
+two networks:  
 wifi 192.168.25.0/24
 ethernet 10.0.0.0/24
 
