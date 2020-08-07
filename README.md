@@ -49,7 +49,7 @@ I used this to setup this DNS:
 https://www.ionos.com/digitalguide/server/configuration/how-to-make-your-raspberry-pi-into-a-dns-server/
 
 
-configuere it as a router
+configuere it as a router for the k8s subnet
 ```
 echo 1 > /proc/sys/net/ipv4/ip_forward
 ```
