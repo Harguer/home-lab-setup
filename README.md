@@ -78,8 +78,8 @@ interface eth0
         #static ip_address=10.0.0.0/24
         static routers=10.0.0.1
         static domain_name_servers=10.0.0.1
-```
 start/restart the service
+```
 sudo systemctl start dhcpcd.service
 ```
 or
