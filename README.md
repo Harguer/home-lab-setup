@@ -6,7 +6,7 @@ two networks:
 wifi 192.168.25.0/24
 ethernet 10.0.0.0/24
 
-configure dns for the k8s on network 10.0.0.0/24
+configure dns for the k8s mostly for network 10.0.0.0/24
 sudo apt-get install bind9 bind9utils dnsutils
 vim /etc/bind/named.conf.local
 
@@ -40,6 +40,7 @@ since I have two dns (pi-hole and this for K8s, i'm using listen { 10.0.0.1}, bu
 vim /etc/bind/named.conf.options 
 ```
         listen-on { any; };
+        //listen-on { 10.0.0.0/24; };
         listen-on-v6 { none; };
 };
 ```
