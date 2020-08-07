@@ -6,7 +6,9 @@ wifi 192.168.25.0/24 - > gateway for the ethernet network and allow K8s cluster 
 ethernet 10.0.0.0/24 - > K8s network where Jenkins is running  
 
 configure dns for the k8s mostly for network 10.0.0.0/24  
+```
 sudo apt-get install bind9 bind9utils dnsutils  
+```
 vim /etc/bind/named.conf.local  
 
 ```
