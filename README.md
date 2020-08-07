@@ -138,7 +138,7 @@ uid: jenkins
 uidNumber: 10001
 gidNumber: 10001
 homeDirectory: /home/jenkins
-userPassword: admin
+userPassword: xxxxxxxxx
 loginShell: /bin/bash
 ```
 
