@@ -35,6 +35,29 @@ vim  /etc/bind/db.rev.0.0.10.in-addr.arpa
 1         IN PTR matrix.home.lan.
 2         IN PTR k8-pi-master1.home.lan.
 3         IN PTR k8-pi-node1.home.lan.
+4         IN PTR k8-pi-node2.home.lan.
+100       IN PTR storage.home.lan.
+128       IN PTR jenkins.home.lan.
+129       IN PTR mysql.home.lan.
+```
+vim  /etc/bind/db.home.lan  
+```
+home.lan. IN SOA matrix.home.lan. hostmaster.home.lan. (
+   2017081401 ; serial
+    8H ; refresh
+    4H ; retry
+    4W ; expire
+    1D ; minimum
+)
+home.lan. IN NS matrix.home.lan.
+localhost           IN A 127.0.0.1
+matrix              IN A 10.0.0.1
+k8-pi-master1       IN A 10.0.0.2
+k8-pi-node1         IN A 10.0.0.3
+k8-pi-node2         IN A 10.0.0.4
+storage             IN A 10.0.0.100
+jenkins             IN A 10.0.0.128
+mysql               IN A 10.0.0.129
 ```
 
 since I have two dns (pi-hole and this for K8s, i'm using listen { 10.0.0.1}, but it can be any  
@@ -107,7 +130,7 @@ docker run -d -p 10.0.0.1:5000:5000 --restart always --name registry registry
 
 I have Jenkins configured with ldap auth, here is what i did to have ldap server on my raspberry pi 2
 
-https://www.instructables.com/id/Make-Raspberry-Pi-into-a-LDAP-Server/
+https://www.instructables.com/id/Make-Raspberry-Pi-into-a-LDAP-Server/  
 you can reconfigure anytime:
 ```
 sudo dpkg-reconfigure slapd
@@ -169,3 +192,21 @@ run:
 sudo ldapadd -D "cn=admin,dc=home,dc=lan" -W -H ldapi:/// -f devops.ldif 
 ```
 
+For a file server (NFS) for pod's storage, I'm using a 500G SSD hard drive wih lvm (100G) and exporting a NFS to be used as storage provisioner on K8s env.
+
+```
+sudo vgcreate vgdata /dev/sda
+sudo lvcreate -n vgdata/nfs -L 100G
+sudo apt-get install xfsprogs
+sudo mkfs.xfs /dev/vgdata/nfs
+sudo mkfs.xfs /dev/vgdata/nfs
+sudo mkdir -p /srv/nfs
+sudo bash -c "echo '/dev/mapper/vgdata-nfs /srv/nfs xfs defaults 0 0' >> /etc/fstab"
+mount /srv/nfs
+sudo apt-get install nfs-common nfs-kernel-server
+echo '/srv/nfs    10.0.0.0/24(rw,sync,no_subtree_check,no_root_squash)' >> /etc/exports
+sudo systemctl status nfs-server.service 
+exportfs -a
+sudo exportfs -a
+sudo systemctl start nfs-server.service 
+```
